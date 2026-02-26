@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop: Future Developers 🚀</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap');
+        body { font-family: 'Prompt', sans-serif; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .gradient-bg { background: radial-gradient(circle at top right, #4f46e5, #7c3aed, #2563eb); }
+        .btn-grad { background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen py-8 px-4">
+
+    <div class="max-w-md mx-auto text-center mb-6 text-white">
+        <h1 class="text-3xl font-bold tracking-tight">Let's Code! 💻</h1>
+        <p class="opacity-90 text-sm mt-2 font-light">มาทำความรู้จักกันหน่อย ก่อนเริ่มสร้างโลกใบใหม่</p>
+    </div>
+
+    <div class="max-w-md mx-auto glass-card rounded-[2.5rem] shadow-2xl p-8">
+        <form id="workshopForm" class="space-y-6">
+            
+            <div>
+                <label class="block text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">ชื่อเล่น / ชื่อเรียก</label>
+                <input type="text" name="nickname" required placeholder="บอกชื่อเท่ๆ ของคุณ..."
+                    class="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-indigo-400 focus:bg-white outline-none transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-3">เคยเขียนเว็บไหม?</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="relative border-2 rounded-2xl p-4 flex flex-col items-center cursor-pointer transition border-gray-100 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+                        <input type="radio" name="experience" value="ไม่เคย" checked class="hidden">
+                        <span class="text-2xl mb-1">🐣</span>
+                        <span class="text-xs font-medium">ครั้งแรกเลย!</span>
+                    </label>
+                    <label class="relative border-2 rounded-2xl p-4 flex flex-col items-center cursor-pointer transition border-gray-100 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+                        <input type="radio" name="experience" value="เคยบ้าง" class="hidden">
+                        <span class="text-2xl mb-1">⚔️</span>
+                        <span class="text-xs font-medium">เคยลองมาบ้าง</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">คาดหวังอะไร หรืออยากให้ทำโปรเจคไหนโชว์สดๆ ไหม?</label>
+                <textarea name="expectation" rows="3" placeholder="เช่น อยากทำเว็บขายของ, อยากให้สอนยิง API สดๆ หรืออยากเก่งเหมือนพี่..."
+                    class="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-indigo-400 focus:bg-white outline-none transition"></textarea>
+            </div>
+
+            <div class="bg-gradient-to-br from-indigo-50 to-blue-50 p-4 rounded-2xl border border-indigo-100">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-indigo-700 uppercase">ตำแหน่งปัจจุบัน</span>
+                    <button type="button" onclick="getLocation()" class="text-[10px] bg-indigo-600 text-white px-3 py-1 rounded-full hover:bg-indigo-700 transition">
+                        <i class="fas fa-location-arrow mr-1"></i> ดึง GPS
+                    </button>
+                </div>
+                <div class="flex gap-4 text-[11px] font-mono text-indigo-400">
+                    <p>Lat: <span id="latText" class="text-gray-700">-</span></p>
+                    <p>Long: <span id="lngText" class="text-gray-700">-</span></p>
+                </div>
+                <input type="hidden" name="latitude" id="latInput">
+                <input type="hidden" name="longitude" id="lngInput">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">เครื่องดื่มเช้านี้ (อวดหน่อย!)</label>
+                <div class="relative group h-32 border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center bg-gray-50 hover:bg-indigo-50 transition overflow-hidden">
+                    <img id="preview" class="absolute inset-0 w-full h-full object-cover hidden">
+                    <div id="uploadPlaceholder" class="text-center">
+                        <i class="fas fa-mug-hot text-2xl text-gray-300"></i>
+                        <p class="text-[10px] text-gray-400 mt-1">แตะเพื่อถ่ายรูป</p>
+                    </div>
+                    <input type="file" id="photoInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" required>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn"
+                class="w-full btn-grad text-white font-bold py-4 rounded-2xl shadow-xl hover:shadow-indigo-200 transition-all transform active:scale-95">
+                ส่งคำขอเข้าคลาสเรียน! 🚀
+            </button>
+        </form>
+    </div>
+
+    <div id="loading" class="fixed inset-0 bg-indigo-900/90 hidden flex flex-col items-center justify-center z-50 text-white">
+        <div class="animate-spin text-4xl mb-4"><i class="fas fa-circle-notch"></i></div>
+        <p class="text-lg font-light tracking-widest">SENDING DATA...</p>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzsen00c8T7x_38nNfURWv2BH5NKaeaPSICrmcHhguqZBlZInozDNmO5_zJuQaRVfkt/exec';
+        const form = document.getElementById('workshopForm');
+        const photoInput = document.getElementById('photoInput');
+        const preview = document.getElementById('preview');
+        const placeholder = document.getElementById('uploadPlaceholder');
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    document.getElementById('latText').innerText = pos.coords.latitude.toFixed(4);
+                    document.getElementById('lngText').innerText = pos.coords.longitude.toFixed(4);
+                    document.getElementById('latInput').value = pos.coords.latitude;
+                    document.getElementById('lngInput').value = pos.coords.longitude;
+                }, () => alert("กรุณาเปิด GPS เพื่อความสนุกครับ!"));
+            }
+        }
+
+        photoInput.onchange = e => {
+            const file = e.target.files[0];
+            if(file) {
+                preview.src = URL.createObjectURL(file);
+                preview.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            }
+        };
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            document.getElementById('loading').classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = function() {
+                const base64Data = reader.result.split(',')[1];
+                const contentType = reader.result.split(',')[0];
+                const formData = new FormData(form);
+                const params = new URLSearchParams();
+                
+                for (const pair of formData.entries()) { params.append(pair[0], pair[1]); }
+                params.append('photo', base64Data);
+                params.append('photoContent', contentType);
+
+                fetch(scriptURL, { method: 'POST', body: params })
+                    .then(() => {
+                        document.getElementById('loading').classList.add('hidden');
+                        alert('ข้อมูลถึงมือพี่แล้ว! เดี๋ยวจัดให้ตามที่ขอครับ 🚀');
+                        form.reset();
+                        preview.classList.add('hidden');
+                        placeholder.classList.remove('hidden');
+                    })
+                    .catch(() => {
+                        document.getElementById('loading').classList.add('hidden');
+                        alert('เกิดข้อผิดพลาด ลองใหม่อีกทีนะ!');
+                    });
+            };
+            reader.readAsDataURL(photoInput.files[0]);
+        });
+    </script>
+</body>
+</html>
